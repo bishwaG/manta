@@ -283,14 +283,29 @@ splitReadAligner(
     const std::string& querySeq,
     const qscore_snp& qualConvert,
     const uint8_t* queryQual,
-    const std::string& targetSeq,
+    const std::string& targetSeq2,
     const known_pos_range2& targetBpOffsetRange,
     SRAlignmentInfo& alignment)
 {
     using namespace illumina::common;
 
     const unsigned querySize = querySeq.size();
+    unsigned targetSize2 = targetSeq2.size();
+
+    // tmp fix for MM's failure case:
+    std::string targetSeqTmp;
+    if (querySize >= targetSize2)
+    {
+        targetSeqTmp = targetSeq2;
+        for(;targetSize2 <= querySize; ++targetSize2)
+        {
+            targetSeqTmp.push_back('N');
+        }
+    }
+
+    const std::string& targetSeq( targetSeqTmp.empty() ? targetSeq2 : targetSeqTmp);
     const unsigned targetSize = targetSeq.size();
+
     if (querySize >= targetSize)
     {
         std::ostringstream oss;
