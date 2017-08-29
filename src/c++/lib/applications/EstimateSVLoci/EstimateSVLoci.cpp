@@ -145,6 +145,7 @@ runESLRegion(
 
     if (! isMultiRegion)
     {
+        // Save the locus set directly in single-region mode to avoid the object copy
         locusFinder.getLocusSet().save(opt.outputFilename.c_str());
     }
     else
@@ -178,7 +179,8 @@ runESL(const ESLOptions& opt)
         runESLRegion(opt, region, mergedSet);
     }
 
-    if (! mergedSet.empty())
+    const bool isMultiRegion(opt.regions.size()>1);
+    if (isMultiRegion)
     {
         mergedSet.save(opt.outputFilename.c_str());
     }
