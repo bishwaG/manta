@@ -36,6 +36,8 @@
 struct stream_state_reporter
 {
     virtual void report_state(std::ostream& /*os*/) const {}
+
+    virtual ~stream_sate_reporter();
 };
 
 
@@ -64,7 +66,7 @@ struct bam_streamer : public stream_state_reporter, public boost::noncopyable
         const char* referenceFilename,
         const char* region = nullptr);
 
-    virtual ~bam_streamer();
+    ~bam_streamer();
 
     /// \brief Set new region to iterate over, this will fail if the alignment file is not indexed
     ///
